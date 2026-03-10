@@ -26,6 +26,10 @@ Run in a target repository:
 repo-bootstrap-toolkit init --target .
 ```
 
+Version behavior for generated `.cz.toml`:
+- Toolkit always writes `version = "0.2.0"`.
+- You can update it later with Commitizen bump commands.
+
 Install Commitizen as a global CLI (recommended):
 
 ```bash
@@ -50,6 +54,27 @@ Release/version bump from commit history:
 
 ```bash
 cz bump
+```
+
+Common bump commands:
+
+```bash
+# Safe check before bumping
+cz bump --check-consistency
+
+# Auto-detect increment from commit history
+cz bump
+
+# Force increment type
+cz bump --increment PATCH
+cz bump --increment MINOR
+cz bump --increment MAJOR
+```
+
+After bump:
+
+```bash
+git push origin main --follow-tags
 ```
 
 ## Daily Usage

@@ -4,6 +4,8 @@ import argparse
 from importlib import resources
 from pathlib import Path
 
+GENERATED_CZ_VERSION = "0.2.0"
+
 
 def _read_template(name: str) -> str:
     return resources.files("repo_bootstrap_toolkit.templates").joinpath(name).read_text(
@@ -20,7 +22,8 @@ def _write_file(path: Path, content: str, force: bool) -> None:
 
 
 def init_repo(target: Path, python_version: str, force: bool) -> None:
-    cz_content = _read_template("cz.toml.tmpl")
+    cz_template = _read_template("cz.toml.tmpl")
+    cz_content = cz_template.format(version=GENERATED_CZ_VERSION)
     ci_template = _read_template("python_ci.yml.tmpl")
     ci_content = ci_template.format(python_version=python_version)
 
@@ -32,11 +35,14 @@ def init_repo(target: Path, python_version: str, force: bool) -> None:
     )
 
     print("\nNext steps:")
+    print(f"0) Generated .cz.toml with version = {GENERATED_CZ_VERSION}")
     print("1) Install Commitizen via pipx or uv:")
     print("   - pipx install commitizen")
     print("   - uv tool install commitizen")
     print("2) Use Commitizen:")
     print("   - cz commit")
+    print("3) Bump version when releasing:")
+    print("   - cz bump")
 
 
 def build_parser() -> argparse.ArgumentParser:
