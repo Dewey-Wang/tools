@@ -25,26 +25,54 @@ Replace `project_root_toolkit` with your target tool directory.
 Install all local tools in editable mode:
 
 ```bash
-python install_tools.py --editable
+python devtools/install_tools.py --editable
 ```
 
 Install one tool only:
 
 ```bash
-python install_tools.py --editable --tool project_root_toolkit
+python devtools/install_tools.py --editable --tool project_root_toolkit
 ```
 
 Validate tool structure:
 
 ```bash
-python check_tools.py
+python devtools/check_tools.py
+```
+
+Validate one tool only:
+
+```bash
+python devtools/check_tools.py --tool project_root_toolkit
 ```
 
 Run full local validation (same as CI logic):
 
 ```bash
-python ci_validate_tools.py
+python devtools/ci_validate_tools.py
 ```
+
+Validate one tool only:
+
+```bash
+python devtools/ci_validate_tools.py --tool project_root_toolkit
+```
+
+## Devtools Folder
+
+All CI/CD and contributor helper scripts are centralized in:
+
+```text
+devtools/
+  check_tools.py
+  ci_validate_tools.py
+  install_tools.py
+```
+
+Local pre-PR test flow:
+1. `python devtools/check_tools.py`
+2. `python devtools/ci_validate_tools.py`
+3. Fix failures before opening a PR.
 
 ## Required Layout For Each Tool
 
@@ -83,7 +111,7 @@ Rules:
 3. (Optional) Add CLI entry point in `pyproject.toml`:
    - `[project.scripts]`
 4. Run checks:
-   - `python check_tools.py`
+   - `python devtools/check_tools.py`
 5. Build package locally:
    - `python -m pip install build`
    - `python -m build` (run inside the tool directory)
@@ -113,12 +141,15 @@ GitHub Actions workflow:
 - `.github/workflows/tools-ci.yml`
 
 Checks on every PR and push to `main`:
-1. `python check_tools.py` (structure rules)
-2. `python ci_validate_tools.py` (editable install, wheel build, and import smoke test for each tool)
+1. Detect changed tool directories
+2. `python devtools/check_tools.py --tool <changed_tool>` (structure rules)
+3. `python devtools/ci_validate_tools.py --tool <changed_tool>` (editable install, wheel build, import smoke test)
+
+If no tool package changed, CI exits early.
 
 ## Maintenance Checklist
 
 Before committing:
 1. No `__pycache__/`, `*.egg-info/`, `build/`, `dist/` checked in.
-2. `python check_tools.py` passes.
+2. `python devtools/check_tools.py` passes.
 3. Tool README matches current API.

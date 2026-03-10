@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 import shutil
@@ -16,6 +17,23 @@ def discover_tools(root: Path) -> list[Path]:
             if p.is_dir() and p.name not in IGNORED_DIRS and (p / "pyproject.toml").exists()
         ]
     )
+
+
+def select_tools(root: Path, tool_names: list[str]) -> list[Path]:
+    available = {p.name: p for p in discover_tools(root)}
+    if not available:
+        raise SystemExit("No tools found.")
+
+    if not tool_names:
+        return list(available.values())
+
+    missing = [name for name in tool_names if name not in available]
+    if missing:
+        raise SystemExit(
+            f"Unknown tool(s): {', '.join(missing)}. "
+            f"Available: {', '.join(sorted(available))}"
+        )
+    return [available[name] for name in tool_names]
 
 
 def package_names(tool_dir: Path) -> list[str]:
@@ -72,10 +90,19 @@ def validate_tool(tool_dir: Path) -> None:
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parent
-    tools = discover_tools(root)
-    if not tools:
-        raise SystemExit("No tools found.")
+    parser = argparse.ArgumentParser(
+        description="Validate install/build/import for tool packages."
+    )
+    parser.add_argument(
+        "--tool",
+        action="append",
+        default=[],
+        help="Tool folder name to validate. Repeat for multiple tools.",
+    )
+    args = parser.parse_args()
+
+    root = Path(__file__).resolve().parents[1]
+    tools = select_tools(root, args.tool)
 
     for tool in tools:
         print(f"\n=== Validating {tool.name} ===")

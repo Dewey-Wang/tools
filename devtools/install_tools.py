@@ -42,7 +42,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parent
+    root = Path(__file__).resolve().parents[1]
     available = {d.name: d for d in discover_tool_dirs(root)}
     if not available:
         raise SystemExit("No tool packages found (missing pyproject.toml).")

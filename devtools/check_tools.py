@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 REQUIRED_FILES = ("pyproject.toml", "README.md")
@@ -17,6 +18,23 @@ def discover_tools(root: Path) -> list[Path]:
             if p.is_dir() and p.name not in IGNORED_DIRS and (p / "pyproject.toml").exists()
         ]
     )
+
+
+def select_tools(root: Path, tool_names: list[str]) -> list[Path]:
+    available = {p.name: p for p in discover_tools(root)}
+    if not available:
+        raise SystemExit("No tool packages found.")
+
+    if not tool_names:
+        return list(available.values())
+
+    missing = [name for name in tool_names if name not in available]
+    if missing:
+        raise SystemExit(
+            f"Unknown tool(s): {', '.join(missing)}. "
+            f"Available: {', '.join(sorted(available))}"
+        )
+    return [available[name] for name in tool_names]
 
 
 def check_tool(tool_dir: Path) -> list[str]:
@@ -60,10 +78,19 @@ def check_tool(tool_dir: Path) -> list[str]:
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parent
-    tools = discover_tools(root)
-    if not tools:
-        raise SystemExit("No tool packages found.")
+    parser = argparse.ArgumentParser(
+        description="Check tool package structure and repository hygiene."
+    )
+    parser.add_argument(
+        "--tool",
+        action="append",
+        default=[],
+        help="Tool folder name to check. Repeat for multiple tools.",
+    )
+    args = parser.parse_args()
+
+    root = Path(__file__).resolve().parents[1]
+    tools = select_tools(root, args.tool)
 
     all_errors: list[str] = []
     for tool in tools:

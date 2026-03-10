@@ -17,14 +17,39 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Detect changed tools
+        id: changed
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE="${{ github.event.pull_request.base.sha }}"
+            HEAD="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE="${{ github.event.before }}"
+            HEAD="${{ github.sha }}"
+          fi
+          echo "Comparing $BASE..$HEAD"
+          python devtools/detect_changed_tools.py --base "$BASE" --head "$HEAD" --github-output "$GITHUB_OUTPUT"
+
+      - name: Show changed tools
+        run: echo "Changed tools: ${{ steps.changed.outputs.tools_json }}"
+
       - name: Check tool structure
-        run: python check_tools.py
+        if: steps.changed.outputs.has_tools == 'true'
+        run: python devtools/check_tools.py ${{ steps.changed.outputs.tools_args }}
 
       - name: Validate install/build/import
-        run: python ci_validate_tools.py
+        if: steps.changed.outputs.has_tools == 'true'
+        run: python devtools/ci_validate_tools.py ${{ steps.changed.outputs.tools_args }}
+
+      - name: Skip when no tool changed
+        if: steps.changed.outputs.has_tools != 'true'
+        run: echo "No tool package changes detected. Skipping tool checks."
