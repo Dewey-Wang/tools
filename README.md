@@ -40,6 +40,12 @@ Validate tool structure:
 python check_tools.py
 ```
 
+Run full local validation (same as CI logic):
+
+```bash
+python ci_validate_tools.py
+```
+
 ## Required Layout For Each Tool
 
 ```text
@@ -100,6 +106,15 @@ Release flow:
 3. Tag release
 4. Push commit + tag
 5. Consumers install using tag in Git URL
+
+## CI/CD
+
+GitHub Actions workflow:
+- `.github/workflows/tools-ci.yml`
+
+Checks on every PR and push to `main`:
+1. `python check_tools.py` (structure rules)
+2. `python ci_validate_tools.py` (editable install, wheel build, and import smoke test for each tool)
 
 ## Maintenance Checklist
 
