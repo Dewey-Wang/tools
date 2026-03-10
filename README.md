@@ -2,7 +2,7 @@
 
 Monorepo for small reusable Python tools.
 
-Each subdirectory is an installable package that can be installed directly from GitHub.
+Tool packages are located under `packages/` and can be installed directly from GitHub.
 
 ## Available Tools
 
@@ -17,13 +17,13 @@ Each subdirectory is an installable package that can be installed directly from 
 Install one tool from GitHub:
 
 ```bash
-python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=project_root_toolkit"
+python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=packages/project_root_toolkit"
 ```
 
 Install from a release tag:
 
 ```bash
-python -m pip install "git+https://github.com/Dewey-Wang/tools.git@project_root_toolkit-v0.1.0#subdirectory=project_root_toolkit"
+python -m pip install "git+https://github.com/Dewey-Wang/tools.git@project_root_toolkit-v0.1.0#subdirectory=packages/project_root_toolkit"
 ```
 
 Replace `project_root_toolkit` with the tool folder you want.

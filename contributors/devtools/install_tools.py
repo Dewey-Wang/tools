@@ -5,12 +5,17 @@ import subprocess
 import sys
 from pathlib import Path
 
+PACKAGES_DIR_NAME = "packages"
+
 
 def discover_tool_dirs(root: Path) -> list[Path]:
+    packages_dir = root / PACKAGES_DIR_NAME
+    if not packages_dir.is_dir():
+        return []
     return sorted(
         [
             d
-            for d in root.iterdir()
+            for d in packages_dir.iterdir()
             if d.is_dir() and (d / "pyproject.toml").exists()
         ]
     )

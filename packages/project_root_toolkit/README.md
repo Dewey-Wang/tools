@@ -19,13 +19,13 @@ Instead of hard-coding paths or using fragile `../../..` hacks,
 From GitHub subdirectory:
 
 ```bash
-python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=project_root_toolkit"
+python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=packages/project_root_toolkit"
 ```
 
 From local `tools/` repo:
 
 ```bash
-python -m pip install -e ./project_root_toolkit
+python -m pip install -e ./packages/project_root_toolkit
 ```
 
 ---

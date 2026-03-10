@@ -7,13 +7,17 @@ import shutil
 from pathlib import Path
 
 IGNORED_DIRS = {".git", "__pycache__"}
+PACKAGES_DIR_NAME = "packages"
 
 
 def discover_tools(root: Path) -> list[Path]:
+    packages_dir = root / PACKAGES_DIR_NAME
+    if not packages_dir.is_dir():
+        return []
     return sorted(
         [
             p
-            for p in root.iterdir()
+            for p in packages_dir.iterdir()
             if p.is_dir() and p.name not in IGNORED_DIRS and (p / "pyproject.toml").exists()
         ]
     )

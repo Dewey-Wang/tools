@@ -5,6 +5,13 @@ This folder contains contributor docs and helper scripts for the `tools` monorep
 ## Folder Layout
 
 ```text
+packages/
+  <tool_name>/
+    pyproject.toml
+    README.md
+    src/
+      <package_name>/
+        __init__.py
 contributors/
   README.md
   devtools/
@@ -24,7 +31,7 @@ contributors/
 Required structure:
 
 ```text
-<tool_name>/
+packages/<tool_name>/
   pyproject.toml
   README.md
   src/
@@ -35,7 +42,7 @@ Required structure:
 Recommended additions:
 
 ```text
-<tool_name>/
+packages/<tool_name>/
   tests/
   src/<package_name>/cli.py
   src/<package_name>/py.typed
@@ -106,5 +113,5 @@ Release flow:
 
 Before committing:
 1. No `__pycache__/`, `*.egg-info/`, `build/`, `dist/` checked in
-2. `python devtools/check_tools.py` passes
+2. `python contributors/devtools/check_tools.py` passes
 3. Tool README matches current API

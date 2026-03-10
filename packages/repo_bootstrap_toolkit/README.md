@@ -15,7 +15,7 @@ Official docs:
 ## Install
 
 ```bash
-python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=repo_bootstrap_toolkit"
+python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=packages/repo_bootstrap_toolkit"
 ```
 
 ## Quick Start

@@ -5,14 +5,17 @@ import json
 import subprocess
 from pathlib import Path
 
-IGNORED_DIRS = {".git", "__pycache__", "contributors", ".github"}
+PACKAGES_DIR_NAME = "packages"
 
 
 def discover_tools(root: Path) -> set[str]:
+    packages_dir = root / PACKAGES_DIR_NAME
+    if not packages_dir.is_dir():
+        return set()
     return {
         p.name
-        for p in root.iterdir()
-        if p.is_dir() and p.name not in IGNORED_DIRS and (p / "pyproject.toml").exists()
+        for p in packages_dir.iterdir()
+        if p.is_dir() and (p / "pyproject.toml").exists()
     }
 
 
@@ -29,9 +32,9 @@ def detect_changed_tools(root: Path, base: str, head: str) -> list[str]:
     files = changed_files(root, base, head)
     changed: set[str] = set()
     for rel in files:
-        first = rel.split("/", 1)[0].split("\\", 1)[0]
-        if first in tools:
-            changed.add(first)
+        parts = rel.replace("\\", "/").split("/")
+        if len(parts) >= 2 and parts[0] == PACKAGES_DIR_NAME and parts[1] in tools:
+            changed.add(parts[1])
     return sorted(changed)
 
 
