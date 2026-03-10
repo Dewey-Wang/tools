@@ -101,7 +101,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     tools = select_tools(root, args.tool)
 
     for tool in tools:

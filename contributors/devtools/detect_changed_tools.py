@@ -5,7 +5,7 @@ import json
 import subprocess
 from pathlib import Path
 
-IGNORED_DIRS = {".git", "__pycache__", "devtools", ".github"}
+IGNORED_DIRS = {".git", "__pycache__", "contributors", ".github"}
 
 
 def discover_tools(root: Path) -> set[str]:
@@ -56,7 +56,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     tools = detect_changed_tools(root, args.base, args.head)
     print(json.dumps(tools))
 

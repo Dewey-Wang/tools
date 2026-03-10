@@ -37,7 +37,7 @@ jobs:
             HEAD="${{ github.sha }}"
           fi
           echo "Comparing $BASE..$HEAD"
-          python devtools/detect_changed_tools.py --base "$BASE" --head "$HEAD" --github-output "$GITHUB_OUTPUT"
+          python contributors/devtools/detect_changed_tools.py --base "$BASE" --head "$HEAD" --github-output "$GITHUB_OUTPUT"
 
       - name: Show changed tools
         run: |
@@ -46,12 +46,12 @@ jobs:
       - name: Check tool structure
         if: steps.changed.outputs.has_tools == 'true'
         run: |
-          python devtools/check_tools.py ${{ steps.changed.outputs.tools_args }}
+          python contributors/devtools/check_tools.py ${{ steps.changed.outputs.tools_args }}
 
       - name: Validate install/build/import
         if: steps.changed.outputs.has_tools == 'true'
         run: |
-          python devtools/ci_validate_tools.py ${{ steps.changed.outputs.tools_args }}
+          python contributors/devtools/ci_validate_tools.py ${{ steps.changed.outputs.tools_args }}
 
       - name: Skip when no tool changed
         if: steps.changed.outputs.has_tools != 'true'
