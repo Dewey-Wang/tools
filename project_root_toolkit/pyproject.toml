@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "project-root-toolkit"
+version = "0.1.0"
+description = "Utilities for portable project-root path resolution across environments."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "HIV Analysis Team" }]
+dependencies = []
+
+[project.scripts]
+project-root-toolkit = "project_root_toolkit.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+project_root_toolkit = ["py.typed", "templates/*.py.tmpl"]

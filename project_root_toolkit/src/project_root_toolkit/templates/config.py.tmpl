@@ -1,0 +1,18 @@
+from pathlib import Path
+from project_root_toolkit import resolve_project_root
+
+# Put your local/HPC root paths here (first existing path wins).
+CANDIDATES_DIR = (
+    r"C:\path\to\your\project",
+    "/path/to/your/project",
+)
+
+# Resolve once, use everywhere.
+PROJECT_ROOT = resolve_project_root(
+    start=Path(__file__),
+    candidates_dir=CANDIDATES_DIR,
+    markers=(),
+)
+
+DATA_DIR = PROJECT_ROOT / "data"
+RESULTS_DIR = PROJECT_ROOT / "results"
