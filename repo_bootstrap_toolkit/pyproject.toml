@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "repo-bootstrap-toolkit"
+version = "0.1.0"
+description = "Scaffold Commitizen and GitHub Actions CI files for Python repositories."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Dewey Wang" }]
+dependencies = []
+
+[project.scripts]
+repo-bootstrap-toolkit = "repo_bootstrap_toolkit.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+repo_bootstrap_toolkit = ["py.typed", "templates/*.tmpl"]
