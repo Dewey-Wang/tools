@@ -9,7 +9,7 @@ description = "Utilities for portable project-root path resolution across enviro
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "HIV Analysis Team" }]
+authors = [{ name = "Ding Yang Wang" }]
 dependencies = []
 
 [project.scripts]

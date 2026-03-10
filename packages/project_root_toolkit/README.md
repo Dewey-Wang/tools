@@ -19,6 +19,8 @@ Instead of hard-coding paths or using fragile `../../..` hacks,
 From GitHub subdirectory:
 
 ```bash
+conda activate <your_env_name> # If you use conda for analysis, activate the same env first, or install/runtime/Pylance may use different Python environments and raise errors.
+
 python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=packages/project_root_toolkit"
 ```
 
