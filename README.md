@@ -27,55 +27,6 @@ python -m pip install "git+https://github.com/Dewey-Wang/tools.git@project_root_
 
 Replace `project_root_toolkit` with your target tool directory.
 
-## Bootstrap CI/CD + Commitizen In Another Repo
-
-Install:
-
-```bash
-python -m pip install "git+https://github.com/Dewey-Wang/tools.git#subdirectory=repo_bootstrap_toolkit"
-```
-
-Run in the target repo root:
-
-```bash
-repo-bootstrap-toolkit init --target .
-```
-
-Generated files:
-1. `.cz.toml`
-2. `.github/workflows/python-ci.yml`
-
-If files already exist:
-
-```bash
-repo-bootstrap-toolkit init --target . --force
-```
-
-Customize Python version in generated CI:
-
-```bash
-repo-bootstrap-toolkit init --target . --python-version 3.12
-```
-
-## Commitizen In This `tools` Repo
-
-This repo already includes root config at `.cz.toml`.
-
-Suggested local setup:
-
-```bash
-pipx install commitizen
-pipx upgrade commitizen
-cz commit
-```
-
-Or with `uv`:
-
-```bash
-uv tool install commitizen
-uv tool upgrade commitizen
-cz commit
-```
 
 ## Contributor Quick Start
 
